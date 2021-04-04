@@ -22,6 +22,11 @@ public class MessageService {
     @Autowired
     private MemberManager memberManager;
 
+
+    ////////////////////////////////////////////////////
+    //API Service
+    ////////////////////////////////////////////////////
+
     //Api Service
     public MessageDto.MessageDtoResponse saveMessage(MessageDto.MessageDtoRequest messageDto) {
         Member sendMember = memberManager.getMember();
@@ -60,12 +65,15 @@ public class MessageService {
         return messageRepository.findAll();
     }
 
-    public void removeMessage(Long message_id){
-        messageRepository.deleteById(message_id);
+
+    public void removeMessage(Long messageId){
+        messageRepository.deleteById(messageId);
     }
+
 
     public void updateMessage(Long messageId, Message message){
         Message beforeMessage = messageRepository.findById(messageId).get();
+
         beforeMessage.setContent(message.getContent());
         beforeMessage.setSender(message.getSender());
         beforeMessage.setReceiver(message.getReceiver());

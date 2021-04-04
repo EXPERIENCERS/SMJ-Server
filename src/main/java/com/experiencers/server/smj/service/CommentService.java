@@ -7,6 +7,7 @@ import com.experiencers.server.smj.manager.MemberManager;
 import com.experiencers.server.smj.repository.BoardRepository;
 import com.experiencers.server.smj.domain.Comment;
 import com.experiencers.server.smj.repository.CommentRepository;
+import com.experiencers.server.smj.repository.MemberRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,8 @@ public class CommentService {
     private CommentRepository commentRepository;
     @Autowired
     private BoardRepository boardRepository;
+    @Autowired
+    private MemberRepository memberRepository;
     @Autowired
     private MemberManager memberManager;
 
@@ -64,10 +67,14 @@ public class CommentService {
         return commentRepository.findById(commentId).get();
     }
 
-    public Comment saveCommentOfAdmin(Comment inputtedComment, Long boardId){
+    public Comment saveCommentOfAdmin(Comment inputtedComment, Long boardId, Long memberId){
         Board board = boardRepository.findById(boardId).get();
 
         inputtedComment.setBoard(board);
+
+        Member member = memberRepository.findById(memberId).get();
+
+        inputtedComment.setMember(member);
 
         Comment savedComment = commentRepository.save(inputtedComment);
 

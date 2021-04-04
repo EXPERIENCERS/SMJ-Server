@@ -2,6 +2,7 @@ package com.experiencers.server.smj.controller;
 
 import com.experiencers.server.smj.domain.Board;
 import com.experiencers.server.smj.domain.Category;
+import com.experiencers.server.smj.domain.Member;
 import com.experiencers.server.smj.enumerate.BoardType;
 import com.experiencers.server.smj.service.BoardService;
 import com.experiencers.server.smj.service.CategoryService;
@@ -32,8 +33,12 @@ public class BoardController {
         List<Board> boardList = boardService.readAllBoard();
         response.addObject("boards", boardList);
         response.addObject("types", BoardType.values());
-        response = getMembers(response);
-        response = getCategories(response);
+
+        List<Member> memberList = memberService.readAllMember();
+        response.addObject("members", memberList);
+
+        List<Category> categoryList = categoryService.readAllCategory();
+        response.addObject("categories", categoryList);
 
         return response;
     }
@@ -52,8 +57,12 @@ public class BoardController {
         ModelAndView response = new ModelAndView("board/edit");
         response.addObject("board", board);
         response.addObject("types", BoardType.values());
-        response = getMembers(response);
-        response = getCategories(response);
+
+        List<Member> memberList = memberService.readAllMember();
+        response.addObject("members", memberList);
+
+        List<Category> categoryList = categoryService.readAllCategory();
+        response.addObject("categories", categoryList);
 
         return response;
     }
@@ -72,10 +81,5 @@ public class BoardController {
         return "redirect:/admin/board";
     }
 
-    private ModelAndView getCategories(ModelAndView mav) {
-        return mav.addObject("categories", categoryService.readAllCategory());
-    }
-    private ModelAndView getMembers(ModelAndView mav) {
-        return mav.addObject("members", memberService.readAllMember());
-    }
+
 }

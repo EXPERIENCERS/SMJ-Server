@@ -1,8 +1,11 @@
 package com.experiencers.server.smj.controller;
 
+import com.experiencers.server.smj.domain.Board;
 import com.experiencers.server.smj.domain.Comment;
+import com.experiencers.server.smj.domain.Member;
 import com.experiencers.server.smj.service.BoardService;
 import com.experiencers.server.smj.service.CommentService;
+import com.experiencers.server.smj.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -18,6 +21,8 @@ public class CommentController {
     CommentService commentService;
     @Autowired
     BoardService boardService;
+    @Autowired
+    MemberService memberService;
 
     @GetMapping("/comment")
     public ModelAndView getIndex(){
@@ -25,16 +30,23 @@ public class CommentController {
 
         ModelAndView response = new ModelAndView("comment/index");
         response.addObject(commentList);
-        response = getBoards(response);
+
+        List<Board> boardList = boardService.readAllBoard();
+        response.addObject("boards", boardList);
+
+        List<Member> memberList = memberService.readAllMember();
+        response.addObject("members", memberList);
+
 
         return response;
     }
 
     @PostMapping("/comment")
     public String postComment(@ModelAttribute Comment inputtedComment,@RequestParam(value = "board_id")Long boardId,
+                              @RequestParam(value = "member_id")Long memberId,
                               HttpServletRequest request){
         System.out.println(inputtedComment.toString());
-        commentService.saveCommentOfAdmin(inputtedComment,boardId);
+        commentService.saveCommentOfAdmin(inputtedComment,boardId,memberId);
 
         return "redirect:"+request.getHeader("referer");
     }
@@ -51,7 +63,9 @@ public class CommentController {
 
         ModelAndView response = new ModelAndView("comment/edit");
         response.addObject("comment", comment);
-        response = getBoards(response);
+
+        List<Member> memberList = memberService.readAllMember();
+        response.addObject("members", memberList);
 
         return response;
 
@@ -62,9 +76,6 @@ public class CommentController {
         commentService.readAndUpdateCommentOfAdmin(commentId, comment);
 
         return "redirect:/admin/comment";
-    }
-    private ModelAndView getBoards(ModelAndView mav) {
-        return mav.addObject("boards", boardService.readAllBoard());
     }
 
 }
