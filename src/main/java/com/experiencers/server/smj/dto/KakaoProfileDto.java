@@ -1,7 +1,9 @@
 package com.experiencers.server.smj.dto;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
+@JsonIgnoreProperties(ignoreUnknown = true)
 @Data
 public class KakaoProfileDto {
 
@@ -48,6 +50,7 @@ public class KakaoProfileDto {
             public String nickname;
             public String thumbnail_image_url;
             public String profile_image_url;
+            public Boolean is_default_image;
 
         }
     }

@@ -56,6 +56,9 @@ public class BoardService {
             Board target = data.get();
             target.setTitle(boardDto.getTitle());
             target.setContent(boardDto.getContent());
+            target.setImageOne(boardDto.getImageOne());
+            target.setImageTwo(boardDto.getImageTwo());
+            target.setImageThree(boardDto.getImageThree());
 
             if(boardDto.getType().toString().equals("TRADE")){
                 target.setType(BoardType.TRADE);

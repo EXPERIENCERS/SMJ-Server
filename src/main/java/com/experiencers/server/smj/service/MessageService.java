@@ -37,9 +37,16 @@ public class MessageService {
         return MessageDto.MessageDtoResponse.of(saveMessage);
     }
 
-    public List<MessageDto.MessageDtoResponse> readAllMessage() {
+    public List<MessageDto.MessageDtoResponse> receivedAllMessage() {
         String email = memberManager.getEmailOfMember();
         List<Message> messages = messageRepository.findAllByReceiver(email);
+
+        return MessageDto.MessageDtoResponse.of(messages);
+    }
+
+    public List<MessageDto.MessageDtoResponse> sentAllMessage() {
+        String email = memberManager.getEmailOfMember();
+        List<Message> messages = messageRepository.findAllBySender(email);
 
         return MessageDto.MessageDtoResponse.of(messages);
     }

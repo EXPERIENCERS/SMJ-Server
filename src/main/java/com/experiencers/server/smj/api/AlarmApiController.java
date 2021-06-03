@@ -26,9 +26,21 @@ public class AlarmApiController {
     })
     @ApiImplicitParam(name = "startDate",value = "해당날짜",required = true,paramType = "path",example = "yyyy-MM-dd")
     @ApiOperation(value = "해당날짜 알람 목록",notes = "성공시 사용자의 해당하는 날짜의 모든 알람을 반환합니다.",response = AlarmDto.AlarmDtoResponse.class)
-    @GetMapping("/{startDate}")
+    @GetMapping("/startDate/{startDate}")
     public ResponseEntity<?> getAlarmsOfDate(@PathVariable("startDate")String startDate) {
         List<AlarmDto.AlarmDtoResponse> alarmList = alarmService.readAllAlarmOfDate(startDate);
+
+        return new ResponseEntity<>(alarmList,HttpStatus.OK);
+    }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    @ApiImplicitParam(name = "id",value = "해당아이디",required = true,paramType = "path")
+    @ApiOperation(value = "해당구분아이디 알람 목록",notes = "성공시 사용자의 해당하는 구분아이디의 알람을 반환합니다.",response = AlarmDto.AlarmDtoResponse.class)
+    @GetMapping("/id/{id}")
+    public ResponseEntity<?> getAlarmsOfId(@PathVariable("id")Long id) {
+        AlarmDto.AlarmDtoResponse alarmList = alarmService.readAllAlarmOfId(id);
 
         return new ResponseEntity<>(alarmList,HttpStatus.OK);
     }

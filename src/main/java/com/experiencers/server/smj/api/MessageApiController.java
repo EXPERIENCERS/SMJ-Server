@@ -27,9 +27,20 @@ public class MessageApiController {
             @ApiResponse(code = 200, message = "성공")
     })
     @ApiOperation(value = "쪽지 목록",notes = "성공시 사용자가 받은 모든 쪽지를 반환합니다.",response = MessageDto.MessageDtoResponse.class)
-    @GetMapping("")
-    public ResponseEntity<?> getMessages(){
-        List<MessageDto.MessageDtoResponse> messageList = messageService.readAllMessage();
+    @GetMapping("/received")
+    public ResponseEntity<?> receiveMessages(){
+        List<MessageDto.MessageDtoResponse> messageList = messageService.receivedAllMessage();
+
+        return new ResponseEntity<>(messageList,HttpStatus.OK);
+    }
+
+    @ApiResponses({
+            @ApiResponse(code = 200, message = "성공")
+    })
+    @ApiOperation(value = "쪽지 목록",notes = "성공시 사용자가 보낸 모든 쪽지를 반환합니다.",response = MessageDto.MessageDtoResponse.class)
+    @GetMapping("/sent")
+    public ResponseEntity<?> sendMessages(){
+        List<MessageDto.MessageDtoResponse> messageList = messageService.sentAllMessage();
 
         return new ResponseEntity<>(messageList,HttpStatus.OK);
     }

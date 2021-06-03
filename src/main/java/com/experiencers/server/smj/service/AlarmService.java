@@ -79,6 +79,12 @@ public class AlarmService {
         return AlarmDto.AlarmDtoResponse.of(alarmList);
     }
 
+    public AlarmDto.AlarmDtoResponse readAllAlarmOfId(Long id){
+        Alarm alarm = alarmRepository.findById(id).orElse(null);
+
+        return AlarmDto.AlarmDtoResponse.of(alarm);
+    }
+
     public void removeAlarm(Long alarmId){
         alarmRepository.deleteById(alarmId);
     }
